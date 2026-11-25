@@ -1,12 +1,12 @@
-// routes/produtoRoutes.js
+// routes/profRoutes.js
 import { Router } from 'express';
 import {
-    getProdutos,
-    getProdutosPorCategoria,
-    getProdutoPorId,
-    postProduto,
-    putProduto,
-    deleteProduto
+    getProfessores,
+    getProfessoresPorCurso,
+    getProfessorPorId,
+    postProfessor,
+    putProfessor,
+    deleteProfessor
 } from '../controllers/profController.js';
 
 const router = Router();

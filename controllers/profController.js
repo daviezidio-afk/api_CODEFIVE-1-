@@ -7,16 +7,16 @@ export const getProfessores = (req, res) => {
     res.status(200).json(professores);
 };
 
-// GET /professores/especialidade/:especialidade
-export const getProfessoresPorEspecialidade = (req, res) => {
-    const especialidade = req.params.especialidade.trim();
-    const professoresEspecialidade = ProfModel.buscarPorEspecialidade(especialidade);
+// GET /professores/curso/:curso
+export const getProfessoresPorCurso = (req, res) => {
+    const curso = req.params.curso.trim();
+    const professoresCurso = ProfModel.buscarPorCurso(curso);
 
-    if (professoresEspecialidade.length > 0) {
-        res.status(200).json(professoresEspecialidade);
+    if (professoresCurso.length > 0) {
+        res.status(200).json(professoresCurso);
     } else {
         res.status(404).json({
-            mensagem: `Nenhum professor encontrado na especialidade ${especialidade}`
+            mensagem: `Nenhum professor encontrado no curso ${curso}`
         });
     }
 };
