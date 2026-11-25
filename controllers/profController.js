@@ -1,5 +1,5 @@
-// controllers/produtoController.js
-import * as ProdutoModel from '../models/profModel.js';
+// controllers/profController.js
+import * as ProfModel from '../models/profModel.js';
 
 // GET /professores
 export const getProfessores = (req, res) => {
@@ -21,8 +21,49 @@ export const getProfessoresPorCurso = (req, res) => {
     }
 };
 
+// GET /professores/sala/:sala
+export const getProfessoresPorSala = (req, res) => {
+    const sala = req.params.sala.trim();
+    const professoresSala = ProfModel.buscarPorSala(sala);
+
+    if (professoresSala.length > 0) {
+        res.status(200).json(professoresSala);
+    } else {
+        res.status(404).json({
+            mensagem: `Nenhum professor encontrado na sala ${sala}`
+        });
+    }
+};
+
+// GET /professores/cpf/:cpf
+export const getProfessorPorCpf = (req, res) => {
+    const cpf = req.params.cpf.trim();
+    const professor = ProfModel.buscarPorCpf(cpf);
+
+    if (professor) {
+        res.status(200).json(professor);
+    } else {
+        res.status(404).json({
+            mensagem: `Professor com CPF ${cpf} não encontrado`
+        });
+    }
+};
+
+// GET /professores/maior-bolsa
+export const getMaiorBolsa = (req, res) => {
+    const professoresMaiorBolsa = ProfModel.buscarMaiorBolsa();
+
+    if (professoresMaiorBolsa.length > 0) {
+        res.status(200).json(professoresMaiorBolsa);
+    } else {
+        res.status(404).json({
+            mensagem: 'Nenhum professor cadastrado.'
+        });
+    }
+};
+
 // GET /professores/:id
-export const getProfesorPorId = (req, res) => {
+export const getProfessorPorId = (req, res) => {
     const id = parseInt(req.params.id);
     const professor = ProfModel.buscarPorId(id);
 
@@ -37,30 +78,30 @@ export const getProfesorPorId = (req, res) => {
 
 // POST /professores
 export const postProfessor = (req, res) => {
-    const { nome, especialidade, email, telefone } = req.body;
+    const { nome, cpf, sala, curso, bolsa } = req.body;
 
-    if (!nome || !especialidade || !email || !telefone) {
+    if (!nome || !cpf || !sala || !curso || bolsa === undefined) {
         return res.status(400).json({
-            mensagem: 'Todos os campos (nome, especialidade, email, telefone) são obrigatórios.'
+            mensagem: 'Todos os campos (nome, cpf, sala, curso, bolsa) são obrigatórios.'
         });
     }
 
-    const novoProfessor = ProfModel.criar({ nome, especialidade, email, telefone });
+    const novoProfessor = ProfModel.criar({ nome, cpf, sala, curso, bolsa });
     res.status(201).json(novoProfessor);
 };
 
 // PUT /professores/:id
 export const putProfessor = (req, res) => {
     const id = parseInt(req.params.id);
-    const { nome, especialidade, email, telefone } = req.body;
+    const { nome, cpf, sala, curso, bolsa } = req.body;
 
-    if (!nome || !especialidade || !email || !telefone) {
+    if (!nome || !cpf || !sala || !curso || bolsa === undefined) {
         return res.status(400).json({
-            mensagem: 'Todos os campos (nome, especialidade, email, telefone) devem ser informados.'
+            mensagem: 'Todos os campos (nome, cpf, sala, curso, bolsa) devem ser informados.'
         });
     }
 
-    const professorAtualizado = ProfModel.atualizar(id, { nome, especialidade, email, telefone });
+    const professorAtualizado = ProfModel.atualizar(id, { nome, cpf, sala, curso, bolsa });
 
     if (!professorAtualizado) {
         return res.status(404).json({

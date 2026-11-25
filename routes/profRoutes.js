@@ -3,6 +3,9 @@ import { Router } from 'express';
 import {
     getProfessores,
     getProfessoresPorCurso,
+    getProfessoresPorSala,
+    getProfessorPorCpf,
+    getMaiorBolsa,
     getProfessorPorId,
     postProfessor,
     putProfessor,
@@ -11,9 +14,11 @@ import {
 
 const router = Router();
 
-// O prefixo '/professores' será definido no app.js
 router.get('/', getProfessores);
+router.get('/maior-bolsa', getMaiorBolsa);
 router.get('/curso/:curso', getProfessoresPorCurso);
+router.get('/sala/:sala', getProfessoresPorSala);
+router.get('/cpf/:cpf', getProfessorPorCpf);
 router.get('/:id', getProfessorPorId);
 router.post('/', postProfessor);
 router.put('/:id', putProfessor);
